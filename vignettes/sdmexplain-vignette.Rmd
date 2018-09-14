@@ -1,0 +1,117 @@
+---
+title: "sdmexplain Vignette"
+author: "Boyan Angelov"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(mlr)
+library(sdmexplain)
+library(dplyr)
+```
+
+## Introduction
+
+In recent years an increased focus has been placed on making machine learning more interpretable. The main reason for this is that black-box models are often not trusted by domain experts. Moreover, often the visualisation of feature importance can yield very valuable insights. For example it might help you decide which data points are not necessary (so you can improve your data collection), or show you something new about what is contributing to the phenonomenon you are studying. In the very least, it acts as a sanity check that your model is learning the right things, thus avoiding bias. For example, if you are building an image classifier for dogs vs. wolves, it might learn that wolves are often photographed on a white background (i.e. snow). If you do not inspect which pixes your model learns, you would not recognize this issue until you have deployed the model and it performs badly.
+
+Species Distribution Modeling (SDM) is the application of machine learning on estimating the species habitat based on occurence data and associated environmental features (temperature, humidity etc.). A field of such importance for ecology and conservation can benefit greatly from becoming more explainable. Domain experts and people in the field rely on the maps produced by those models, and their trust in its accuracy can be increased if they understand more clearly how the model achieves those results. This is the motivation behind `sdmexplain`.
+
+## Preparation
+
+First we need to gather data for modeling. The easiest solution is to use the `sdmbench` package (there are quite a few different parameters you can specify, for more information visit the package website, or `?sdmbench`).
+
+```{r}
+occ_data_raw <- sdmbench::get_benchmarking_data("Loxodonta africana")
+occ_data <- occ_data_raw$df_data
+occ_data$label <- as.factor(occ_data$label)
+head(occ_data)
+```
+
+We can also have a look at the class balance of the data:
+
+```{r}
+table(occ_data$label)
+```
+
+As a next step we have to extract the observation coordinates. We will need those later for plotting the interactive map.
+
+```{r}
+coordinates.df <- rbind(occ_data_raw$raster_data$coords_presence,
+                        occ_data_raw$raster_data$background)
+occ_data <- cbind(occ_data, coordinates.df)
+head(occ_data)
+```
+
+Splitting the data into training and testing sets is the most common way of evaluating the performance of machine learning algorithms. We will be using the `rsample` package to do just that. In this step we should store the training and test set observation coordinates in separate dataframes. We should also make sure to delete the coordiantes from the data.
+
+```{r}
+occ_data <- na.omit(occ_data)
+train_test_split <- rsample::initial_split(occ_data, prop = 0.7)
+data.train <- rsample::training(train_test_split)
+data.test  <- rsample::testing(train_test_split)
+
+train.coords <- dplyr::select(data.train, c("x", "y"))
+data.train$x <- NULL
+data.train$y <- NULL
+
+test.coords <- dplyr::select(data.test, c("x", "y"))
+data.test$x <- NULL
+data.test$y <- NULL
+```
+
+And finally we are ready to train a model on the data. For this we will use the `mlr` package.
+
+```{r}
+task <- makeClassifTask(id = "model", data = data.train, target = "label")
+lrn <- makeLearner("classif.lda", predict.type = "prob")
+mod <- train(lrn, task)
+```
+
+We can do a quick sanity check to make sure the model performed ok.
+
+```{r}
+pred <- predict(mod, newdata = data.test)
+df <- generateThreshVsPerfData(pred, measures = list(fpr, tpr, mmce))
+calculateConfusionMatrix(pred)
+```
+
+We can also plot the ROC curve:
+
+```{r, fig.width=3, fig.height=3}
+plotROCCurves(df)
+```
+
+In the next step `sdmexplain` calls the `lime` package under the hood to generate the explanations.
+
+```{r}
+explainable_data <- prepare_explainable_data(data.test, mod, test.coords)
+```
+
+Process lime plots to make them suitable for the interactive map.
+
+```{r include=FALSE}
+processed_plots <- process_lime_plots(explainable_data$explanation)
+```
+
+## Results
+
+Generate the interactive explainable map. The color of the circles represents the presence probability (bright for low, darker for high) for that location. Clicking on the circle will show the explanations in a popup.
+
+```{r, fig.width=6, fig.height=6}
+plot_explainable_sdm(explainable_data$explanation_coordinates,
+                     explainable_data$map_df,
+                     processed_plots)
+```
+

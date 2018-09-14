@@ -1,38 +1,35 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+    fig_width: 7
+    fig_height: 7
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-    ## Loading required package: ParamHelpers
 
-    ## 
-    ## Attaching package: 'dplyr'
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
 
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
+library(mlr)
+library(sdmexplain)
+library(dplyr)
+```
 
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-sdmexplain
-==========
+# sdmexplain
 
 `sdmexplain` is an R package to make Species Distribution Models more explainable.
 
-Example
--------
+## Example
 
 Preparing training data.
 
-``` r
+```{r}
 occ_data_raw <- sdmbench::get_benchmarking_data("Lynx lynx")
-#> [1] "Getting benchmarking data...."
-#> [1] "Cleaning benchmarking data...."
-#> Assuming 'decimalLatitude' is latitude
-#> Assuming 'decimalLongitude' is longitude
-#> Assuming 'latitude' is latitude
-#> Assuming 'longitude' is longitude
-#> Assuming 'latitude' is latitude
-#> Assuming 'longitude' is longitude
-#> [1] "Done!"
 occ_data <- occ_data_raw$df_data
 occ_data$label <- as.factor(occ_data$label)
 
@@ -55,25 +52,28 @@ data.test$y <- NULL
 
 Training SDM.
 
-``` r
+```{r}
 task <- makeClassifTask(id = "model", data = data.train, target = "label")
 lrn <- makeLearner("classif.lda", predict.type = "prob")
 mod <- train(lrn, task)
-#> Warning in lda.default(x, grouping, ...): variables are collinear
 ```
 
 Preparing data for explainability.
 
-``` r
+```{r}
 explainable_data <- prepare_explainable_data(data.test, mod, test.coords)
+```
+
+```{r include=FALSE}
+processed_plots <- process_lime_plots(explainable_data$explanation)
 ```
 
 Plotting explainable map.
 
-``` r
+```{r example, eval=FALSE}
 plot_explainable_sdm(explainable_data$explanation_coordinates,
                      explainable_data$map_df,
                      processed_plots)
 ```
 
-!()\["screenshots/screenshot\_1.png"\]
+!()["screenshots/screenshot_1.png"]

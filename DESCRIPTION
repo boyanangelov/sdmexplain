@@ -1,0 +1,24 @@
+Package: sdmexplain
+Type: Package
+Title: Provides tools to make Species Distribution Models easier to explain
+Version: 0.1.0
+Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com",
+  role = c("aut", "cre"))
+Maintainer: Boyan Angelov <boyan.angelov@gmail.com>
+Description: Provides tools to make Species Distribution Models easier to explain. Those tools include an interactive map.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
+Imports:
+    httpuv,
+    lime,
+    leaflet,
+    plyr,
+    shiny
+VignetteBuilder: knitr
+Suggests: knitr,
+    rmarkdown,
+    mlr,
+    rsample,
+    sdmbench
