@@ -4,3 +4,4 @@
 .Ruserdata
 **/wc10
 inst/doc
+*.Rproj

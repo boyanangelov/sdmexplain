@@ -8,17 +8,22 @@ output:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r echo=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "README-"
 )
+```
 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 library(mlr)
 library(sdmexplain)
 library(dplyr)
 ```
+
+[![Build Status](https://travis-ci.org/boyanangelov/sdmexplain.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmexplain)
 
 # sdmexplain
 
@@ -76,4 +81,4 @@ plot_explainable_sdm(explainable_data$explanation_coordinates,
                      processed_plots)
 ```
 
-!()["screenshots/screenshot_1.png"]
+!(screenshots/screenshot_1.png)[]

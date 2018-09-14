@@ -1,16 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-    ## Loading required package: ParamHelpers
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
+[![Build Status](https://travis-ci.org/boyanangelov/sdmexplain.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmexplain)
 
 sdmexplain
 ==========
@@ -76,4 +65,4 @@ plot_explainable_sdm(explainable_data$explanation_coordinates,
                      processed_plots)
 ```
 
-!()\["screenshots/screenshot\_1.png"\]
+!(screenshots/screenshot\_1.png)\[\]
