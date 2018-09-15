@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r message=FALSE, warning=FALSE, include=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 library(mlr)
 library(sdmexplain)
 library(dplyr)
@@ -33,7 +33,7 @@ library(dplyr)
 
 Preparing training data.
 
-```{r}
+```{r eval=FALSE}
 occ_data_raw <- sdmbench::get_benchmarking_data("Lynx lynx")
 occ_data <- occ_data_raw$df_data
 occ_data$label <- as.factor(occ_data$label)
@@ -57,7 +57,7 @@ data.test$y <- NULL
 
 Training SDM.
 
-```{r}
+```{r eval=FALSE}
 task <- makeClassifTask(id = "model", data = data.train, target = "label")
 lrn <- makeLearner("classif.lda", predict.type = "prob")
 mod <- train(lrn, task)
@@ -65,11 +65,11 @@ mod <- train(lrn, task)
 
 Preparing data for explainability.
 
-```{r}
+```{r eval=FALSE}
 explainable_data <- prepare_explainable_data(data.test, mod, test.coords)
 ```
 
-```{r include=FALSE}
+```{r eval=FALSE}
 processed_plots <- process_lime_plots(explainable_data$explanation)
 ```
 
@@ -81,4 +81,4 @@ plot_explainable_sdm(explainable_data$explanation_coordinates,
                      processed_plots)
 ```
 
-!(screenshots/screenshot_1.png)[]
+![](screenshots/screenshot_1.png)

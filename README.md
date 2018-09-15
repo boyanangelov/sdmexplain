@@ -13,15 +13,6 @@ Preparing training data.
 
 ``` r
 occ_data_raw <- sdmbench::get_benchmarking_data("Lynx lynx")
-#> [1] "Getting benchmarking data...."
-#> [1] "Cleaning benchmarking data...."
-#> Assuming 'decimalLatitude' is latitude
-#> Assuming 'decimalLongitude' is longitude
-#> Assuming 'latitude' is latitude
-#> Assuming 'longitude' is longitude
-#> Assuming 'latitude' is latitude
-#> Assuming 'longitude' is longitude
-#> [1] "Done!"
 occ_data <- occ_data_raw$df_data
 occ_data$label <- as.factor(occ_data$label)
 
@@ -48,13 +39,16 @@ Training SDM.
 task <- makeClassifTask(id = "model", data = data.train, target = "label")
 lrn <- makeLearner("classif.lda", predict.type = "prob")
 mod <- train(lrn, task)
-#> Warning in lda.default(x, grouping, ...): variables are collinear
 ```
 
 Preparing data for explainability.
 
 ``` r
 explainable_data <- prepare_explainable_data(data.test, mod, test.coords)
+```
+
+``` r
+processed_plots <- process_lime_plots(explainable_data$explanation)
 ```
 
 Plotting explainable map.
@@ -65,4 +59,4 @@ plot_explainable_sdm(explainable_data$explanation_coordinates,
                      processed_plots)
 ```
 
-!(screenshots/screenshot\_1.png)\[\]
+![](screenshots/screenshot_1.png)
