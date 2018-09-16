@@ -5,10 +5,11 @@ dist: trusty
 sudo: required
 warnings_are_errors: false
 r_binary_packages:
-  - httpuv
-  - leaflet
-  - plyr
-  - shiny
+    - dplyr
+    - httpuv
+    - leaflet
+    - plyr
+    - shiny
 r_github_packages:
     - boyanangelov/sdmbench
 cache: packages

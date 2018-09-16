@@ -1,6 +1,7 @@
 #' Plot interactive explainable SDM map
 #'
 #' Create an interactive map, showing the feature explanations for every observation.
+#' @importFrom magrittr %>%
 #' @param explanation_coordinates DataFrame containing the coordinates of the data points.
 #' @param map_df DataFrame containing lime explanations data.
 #' @param processed_plots list List of plots processed for leaflet map
@@ -28,7 +29,7 @@
 plot_explainable_sdm <- function(explanation_coordinates,
                                  map_df,
                                  processed_plots) {
-    pal <- leaflet::colorNumeric(palette = colorRamp(c('#4575B4',
+    pal <- leaflet::colorNumeric(palette = grDevices::colorRamp(c('#4575B4',
                                                        '#D73027',
                                                        '#FFFFBF'),
                                             interpolate = "linear"),
