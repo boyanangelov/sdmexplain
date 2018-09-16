@@ -13,4 +13,5 @@ cache: packages
 addons:
   apt:
     packages:
+        - libmagick++-dev
         - imagemagick
