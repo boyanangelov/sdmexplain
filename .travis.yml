@@ -9,6 +9,8 @@ r_binary_packages:
   - leaflet
   - plyr
   - shiny
+r_github_packages:
+    - boyanangelov/sdmbench
 cache: packages
 addons:
   apt:
