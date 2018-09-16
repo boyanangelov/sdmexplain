@@ -6,8 +6,11 @@ sudo: required
 warnings_are_errors: false
 r_binary_packages:
   - httpuv
-  - lime
   - leaflet
   - plyr
   - shiny
 cache: packages
+addons:
+  apt:
+    packages:
+        - imagemagick
