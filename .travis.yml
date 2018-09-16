@@ -17,3 +17,5 @@ addons:
     packages:
         - libmagick++-dev
         - imagemagick
+        - libgdal-dev
+        - libproj-dev
