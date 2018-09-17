@@ -6,6 +6,11 @@ sdmexplain
 
 `sdmexplain` is an R package to make Species Distribution Models more explainable.
 
+Installation
+------------
+
+    devtools::install_github("boyanangelov/sdmexplain")
+
 Example
 -------
 

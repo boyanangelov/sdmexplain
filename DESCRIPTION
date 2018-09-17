@@ -14,8 +14,9 @@ Imports:
     httpuv,
     lime,
     leaflet,
+    magrittr,
     plyr,
-    shiny
+    shiny,
 VignetteBuilder: knitr
 Suggests:
     testthat,
