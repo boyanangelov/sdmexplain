@@ -1,4 +1,4 @@
-#' Helper functions
+#' Helper function to make the ggplot output from LIME suitable for leaflet.
 #'
 makePlotURI <- function(expr, width, height, ...) {
     pngFile <- shiny::plotPNG(function() { expr },

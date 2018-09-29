@@ -4,14 +4,15 @@
 \alias{plot_explainable_sdm}
 \title{Plot interactive explainable SDM map}
 \usage{
-plot_explainable_sdm(explanation_coordinates, map_df, processed_plots)
+plot_explainable_sdm(input_data, processed_plots,
+  use_selected_feature = FALSE)
 }
 \arguments{
-\item{explanation_coordinates}{DataFrame containing the coordinates of the data points.}
+\item{input_data}{A DataFrame containing the lime explanations and data point coordinates.}
 
-\item{map_df}{DataFrame containing lime explanations data.}
+\item{processed_plots}{A list of plots processed for leaflet map.}
 
-\item{processed_plots}{list List of plots processed for leaflet map}
+\item{use_selected_feature}{A logical indicating if a feature is extracted for plotting.}
 }
 \value{
 Leaflet map
@@ -33,8 +34,6 @@ explainable_data <- prepare_explainable_data(data.test, mod, coordinates.df)
 processed_plots <- process_lime_plots(explainable_data$explanation)
 
 # plot the interactive leaflet map
-plot_explainable_sdm(explainable_data$explanation_coordinates,
-explainable_data$map_df,
-processed_plots)
+plot_explainable_sdm(explainable_data$processed_data, processed_plots)
 }
 }

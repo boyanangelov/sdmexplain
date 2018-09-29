@@ -2,10 +2,10 @@
 % Please edit documentation in R/helpers.R
 \name{makePlotURI}
 \alias{makePlotURI}
-\title{Helper functions}
+\title{Helper function to make the ggplot output from LIME suitable for leaflet.}
 \usage{
 makePlotURI(expr, width, height, ...)
 }
 \description{
-Helper functions
+Helper function to make the ggplot output from LIME suitable for leaflet.
 }

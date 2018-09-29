@@ -75,7 +75,7 @@ And finally we are ready to train a model on the data. For this we will use the 
 
 ```{r}
 task <- makeClassifTask(id = "model", data = data.train, target = "label")
-lrn <- makeLearner("classif.lda", predict.type = "prob")
+lrn <- makeLearner("classif.randomForest", predict.type = "prob")
 mod <- train(lrn, task)
 ```
 
@@ -93,16 +93,10 @@ We can also plot the ROC curve:
 plotROCCurves(df)
 ```
 
-In the next step `sdmexplain` calls the `lime` package under the hood to generate the explanations.
+In the next step `sdmexplain` calls the `lime` package under the hood to generate the explanations. Process lime plots to make them suitable for the interactive map.
 
-```{r}
-explainable_data <- prepare_explainable_data(data.test, mod, test.coords)
-```
-
-Process lime plots to make them suitable for the interactive map.
-
-```{r include=FALSE}
-processed_plots <- process_lime_plots(explainable_data$explanation)
+```{r message=TRUE, warning=TRUE}
+explainable_data <- prepare_explainable_data(data.test, mod, test.coords, randomize = T, randomize_proportion = 0.1)
 ```
 
 ## Results
@@ -110,8 +104,6 @@ processed_plots <- process_lime_plots(explainable_data$explanation)
 Generate the interactive explainable map. The color of the circles represents the presence probability (bright for low, darker for high) for that location. Clicking on the circle will show the explanations in a popup.
 
 ```{r, fig.width=6, fig.height=6}
-plot_explainable_sdm(explainable_data$explanation_coordinates,
-                     explainable_data$map_df,
-                     processed_plots)
+plot_explainable_sdm(explainable_data$processed_data, explainable_data$processed_plots)
 ```
 

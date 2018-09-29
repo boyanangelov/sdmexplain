@@ -4,15 +4,25 @@
 \alias{prepare_explainable_data}
 \title{Explain SDM models}
 \usage{
-prepare_explainable_data(test_dataset, mlr_model, coordinates_df)
+prepare_explainable_data(test_dataset, mlr_model, coordinates_df,
+  selected_feature = "none", randomize = FALSE,
+  randomize_proportion = 0.1)
 }
 \arguments{
-\item{test_dataset}{DataFrame containing the test data}
+\item{test_dataset}{A DataFrame containing the test data.}
 
-\item{mlr_model}{Trained MLR model}
+\item{mlr_model}{A trained MLR model}
+
+\item{coordinates_df}{A Dataframe containing the coordinates.}
+
+\item{selected_feature}{A character indicating if a feature should be extracted for plotting.}
+
+\item{randomize}{Boolean deciding if a sample of the dataset should be taken}
+
+\item{randomize_proportion}{Float deciding what proportion of the data should be sampled}
 }
 \value{
-list containing data necessary for the interactive map
+A list containing data necessary for the interactive map
 }
 \description{
 Prepare data for plotting interactive explainable SDM.

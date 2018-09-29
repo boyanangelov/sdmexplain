@@ -1,10 +1,11 @@
 #' Plot interactive explainable SDM map
 #'
 #' Create an interactive map, showing the feature explanations for every observation.
+#'
 #' @importFrom magrittr %>%
-#' @param explanation_coordinates DataFrame containing the coordinates of the data points.
-#' @param map_df DataFrame containing lime explanations data.
-#' @param processed_plots list List of plots processed for leaflet map
+#' @param input_data A DataFrame containing the lime explanations and data point coordinates.
+#' @param processed_plots A list of plots processed for leaflet map.
+#' @param use_selected_feature A logical indicating if a feature is extracted for plotting.
 #'
 #' @return Leaflet map
 #' @examples
@@ -21,29 +22,61 @@
 #' processed_plots <- process_lime_plots(explainable_data$explanation)
 #'
 #' # plot the interactive leaflet map
-#' plot_explainable_sdm(explainable_data$explanation_coordinates,
-#' explainable_data$map_df,
-#' processed_plots)
+#' plot_explainable_sdm(explainable_data$processed_data, processed_plots)
 #' }
 #' @export
-plot_explainable_sdm <- function(explanation_coordinates,
-                                 map_df,
-                                 processed_plots) {
-    pal <- leaflet::colorNumeric(palette = grDevices::colorRamp(c('#4575B4',
-                                                       '#D73027',
-                                                       '#FFFFBF'),
-                                            interpolate = "linear"),
-                        domain = map_df$label_prob)
+plot_explainable_sdm <- function(input_data, processed_plots,
+    use_selected_feature = FALSE)
+    {
+
+    if (use_selected_feature)
+    {
+        pal <- leaflet::colorNumeric(palette = colorRamp(c("#f44242",
+            "#ffffff"), interpolate = "linear", bias = 0.8),
+            input_data$model_prediction_correct)
+        pal2 <- leaflet::colorBin(palette = "Blues",
+                                  domain = as.numeric(input_data$label))
+
+        leafIcons <- leaflet::icons(iconUrl = ifelse(input_data$label ==
+            "1", paste(system.file(package = "sdmexplain"), "icon_folder/eye.png",
+            sep = "/"), paste(system.file(package = "sdmexplain"),
+            "icon_folder/x.png", sep = "/")), iconWidth = 15,
+            iconHeight = 15)
+
+        leaflet::leaflet(df) %>%
+            leaflet::addProviderTiles("Stamen.TerrainBackground") %>%
+            leaflet::addMarkers(input_data$lng, input_data$lat,
+                icon = leafIcons) %>% leaflet::addCircleMarkers(input_data$lng,
+            input_data$lat, fillColor = pal(input_data$model_prediction_correct),
+            color = pal2(as.numeric(input_data$label)), opacity = 0.8,
+            radius = input_data$feature_value/20, weight = 1,
+            popup = paste0("<img src = ", processed_plots, ">"),
+            popupOptions = leaflet::popupOptions(minWidth = 500,
+                maxWidth = 500))
+    } else
+    {
+        pal <- leaflet::colorNumeric(palette = colorRamp(c("#f44242",
+            "#ffffff"), interpolate = "linear", bias = 0.8),
+            input_data$model_prediction_correct)
+        pal2 <- leaflet::colorBin(palette = "Blues",
+                                  domain = as.numeric(input_data$label))
 
 
-    leaflet::leaflet(df) %>%
-        leaflet::addProviderTiles("Stamen.TerrainBackground") %>%
-        leaflet::addCircleMarkers(explanation_coordinates$x,
-                                  explanation_coordinates$y,
-                         fillColor = pal(map_df$label_prob),
-                         weight = 1,
-                         popup = paste0("<img src = ", processed_plots, ">"),
-                         popupOptions = leaflet::popupOptions(minWidth = 500,
-                                                              maxWidth = 500))
+        leafIcons <- leaflet::icons(iconUrl = ifelse(input_data$label ==
+            "1", paste(system.file(package = "sdmexplain"), "icon_folder/eye.png",
+            sep = "/"), paste(system.file(package = "sdmexplain"),
+            "icon_folder/x.png", sep = "/")), iconWidth = 15,
+            iconHeight = 15)
 
+        leaflet::leaflet(df) %>%
+            leaflet::addProviderTiles("Stamen.TerrainBackground") %>%
+            leaflet::addMarkers(input_data$lng, input_data$lat,
+                icon = leafIcons) %>% leaflet::addCircleMarkers(input_data$lng,
+            input_data$lat, fillColor = pal(input_data$model_prediction_correct),
+            color = pal2(as.numeric(input_data$label)), opacity = 0.8,
+            radius = rep(15, length(input_data)), weight = 1,
+            popup = paste0("<img src = ", processed_plots, ">"),
+            popupOptions = leaflet::popupOptions(minWidth = 500,
+                maxWidth = 500))
+    }
 }

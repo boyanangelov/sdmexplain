@@ -5,18 +5,9 @@ dist: trusty
 sudo: required
 warnings_are_errors: false
 r_binary_packages:
-    - dplyr
-    - httpuv
-    - leaflet
-    - plyr
-    - shiny
-r_github_packages:
-    - boyanangelov/sdmbench
+  - httpuv
+  - lime
+  - leaflet
+  - plyr
+  - shiny
 cache: packages
-addons:
-  apt:
-    packages:
-        - libmagick++-dev
-        - imagemagick
-        - libgdal-dev
-        - libproj-dev
