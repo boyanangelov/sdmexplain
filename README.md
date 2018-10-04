@@ -61,3 +61,5 @@ Plotting explainable map.
 plot_explainable_sdm(explainable_data$processed_data,
                      explainable_data$processed_plots)
 ```
+
+![](screenshots/screenshot_1.png)
