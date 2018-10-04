@@ -1,4 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+[![DOI](https://zenodo.org/badge/142751918.svg)](https://zenodo.org/badge/latestdoi/142751918)
+
 sdmexplain
 ==========
 
@@ -63,3 +65,8 @@ plot_explainable_sdm(explainable_data$processed_data,
 ```
 
 ![](screenshots/screenshot_1.png)
+
+Cite as: Boyan Angelov. (2018, October 4). boyanangelov/sdmexplain:
+sdmexplain: An R Package for Making Species Distribution Models More
+Explainable (Version v0.1.0). Zenodo.
+<http://doi.org/10.5281/zenodo.1445779>
