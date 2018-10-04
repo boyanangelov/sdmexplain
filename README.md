@@ -1,10 +1,9 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/boyanangelov/sdmexplain.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmexplain)
-
 sdmexplain
 ==========
 
-`sdmexplain` is an R package to make Species Distribution Models more explainable.
+`sdmexplain` is an R package to make Species Distribution Models more
+explainable.
 
 Installation
 ------------
@@ -59,9 +58,6 @@ processed_plots <- process_lime_plots(explainable_data$explanation)
 Plotting explainable map.
 
 ``` r
-plot_explainable_sdm(explainable_data$explanation_coordinates,
-                     explainable_data$map_df,
-                     processed_plots)
+plot_explainable_sdm(explainable_data$processed_data,
+                     explainable_data$processed_plots)
 ```
-
-![](screenshots/screenshot_1.png)

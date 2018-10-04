@@ -29,11 +29,11 @@ mod <- train(lrn, task)
 
 # Explainable Package Use -------------------------------------------------
 
-explainable_data <- prepare_explainable_data(data.test, mod, test.coords)
+explainable_data <- prepare_explainable_data(data.test, mod, test.coords, randomize = TRUE, randomize_proportion = 0.1)
 
 
 test_that("Explainable data is prepared", {
-    expect_equal(length(explainable_data), 2)
-    expect_equal(dim(explainable_data$processed_data), c(12540, 6))
-    expect_equal(dim(explainable_data$explanation), c(12540, 13))
+    expect_equal(length(explainable_data), 3)
+    expect_equal(dim(explainable_data$processed_data), c(6270, 6))
+    expect_equal(dim(explainable_data$explanation), c(6270, 12))
 })

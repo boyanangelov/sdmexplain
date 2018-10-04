@@ -2,4 +2,5 @@
 
 export(plot_explainable_sdm)
 export(prepare_explainable_data)
+export(process_lime_plots)
 importFrom(magrittr,"%>%")
