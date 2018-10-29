@@ -5,7 +5,7 @@ sdmexplain
 ==========
 
 `sdmexplain` is an R package to make Species Distribution Models more
-explainable.
+explainable. A preprint of the paper supporting this software is available on [biorxiv](https://www.biorxiv.org/content/early/2018/10/29/454991).
 
 Installation
 ------------
